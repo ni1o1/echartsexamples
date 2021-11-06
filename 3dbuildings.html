@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <!-- 引入 ECharts 文件 -->
     <script src="js/jquery.min.js"></script>
-                <script type="text/javascript">
+    <script type="text/javascript">
     window.HOST_TYPE = 1
     </script>
     <script src="js/echarts.js"></script>
@@ -38,7 +38,7 @@
                 maptalks3D: {
                     center: [118.118600, 24.520422],
                     zoom: 13,
-                    pitch: 50,
+                    pitch: 60,
                     bearing: 30,
                     urlTemplate: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
                     // altitudeScale: 1,
@@ -52,10 +52,18 @@
                         main: {
                             intensity: 1,
                             shadow: true,
-                            shadowQuality: 'high'
+                            shadowQuality: 'high',
+                            alpha: 30,
+                            beta: 60
                         },
                         ambient: {
                             intensity: 0.
+                        },
+                        ambientCubemap: {
+                            texture: 'data/texture.hdr',
+                            exposure: 1,
+                            diffuseIntensity: 0.5,
+                            specularIntensity: 2,
                         },
                     }
                 },
@@ -66,7 +74,7 @@
                         fontSize: 30
                     }
                 },
-                legend: {},
+                tooltip: {},
                 series: [{
                     type: 'lines3D',
                     coordinateSystem: 'maptalks3D',
@@ -89,7 +97,15 @@
                 }, {
                     type: 'polygons3D',
                     coordinateSystem: 'maptalks3D',
-                    data: data
+                    data: data,
+                    shading: 'realistic',
+                    realisticMaterial: {
+                        metalness: 0.9,
+                        roughness: 0.2,
+                    },
+                    itemStyle: {
+                        color: '#fff'
+                    }
                 }],
             };
 

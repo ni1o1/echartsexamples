@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="js/jquery.min.js"></script>
+                <script type="text/javascript">
+    window.HOST_TYPE = 1
+    </script>
+    <script src="js/echarts.js"></script>
+    <script src="js/bmap.js"></script>
+    <script src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    $.getJSON('data/2dod.json', function(data) {
+        $.getJSON('styleJson_light.json', function(styleJson) {
+            var option = {
+                bmap: {
+                    center: [119.118600, 31.220422],
+                    zoom: 8,
+                    roam: true,
+                    mapStyle: {
+                        styleJson: styleJson
+                    }
+                },
+                title: {
+                    text: "",
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 30
+                    }
+                },
+                visualMap: {
+                    max: 5000,
+                    inRange: {
+                        color: ['green', '#eac736', '#d94e5d'],
+                        colorAlpha: [0, 1]
+                    },
+                },
+                legend: {},
+                series: [{
+                    type: 'lines',
+                    coordinateSystem: 'bmap',
+                    data: data[0],
+                    lineStyle: {
+                        normal: {
+                            //color: '#a6c84c',
+                            width: 1.5,
+                            curveness: 0.1
+                        }
+                    },
+                    effect: {
+                        show: true,
+                        period: 10,
+                        constantSpeed: 100,
+                        trailLength: 0.7,
+                        symbolSize: 3
+                    },
+                }, {
+                    type: 'effectScatter',
+                    coordinateSystem: 'bmap',
+                    label: {
+                        emphasis: {
+                            show: true,
+                            position: 'right',
+                            formatter: function(params) { return params['name'] }
+                        }
+                    },
+                    data: data[1],
+                    symbolSize: function(params) { return params[2] ** 0.5 / 15 }
+                }],
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option, true);
+        })
+    })
+    </script>
+</body>
+
+</html>

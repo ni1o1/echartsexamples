@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="js/jquery.min.js"></script>
+        <script type="text/javascript">
+    window.HOST_TYPE = 1
+    </script>
+    <script src="js/echarts.js"></script>
+    <script src="js/bmap.js"></script>
+    <script src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    $.getJSON('data/housepricedata.json', function(data) {
+        $.getJSON('styleJson.json', function(styleJson) {
+            var option = {
+                bmap: {
+                    center: [118.118600, 24.520422],
+                    zoom: 13,
+                    roam: true,
+                    mapStyle: {
+                        styleJson: styleJson
+                    }
+                },
+                tooltip: {
+                    formatter: function(params) { return params['name'] + ':' + params['data']['value'][2] + '元/平方米' }
+                },
+                visualMap: {
+                    max: 100000,
+                    inRange: {
+                        color: ['green', '#eac736', '#d94e5d']
+                    },
+                    textStyle: { color: '#fff' }
+                },
+                title: {
+                    text: "厦门二手房价可视化",
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 30
+                    }
+                },
+                legend: {
+                    data: ['销量1']
+                },
+                series: [{
+                    type: 'scatter',
+                    coordinateSystem: 'bmap',
+                    data: data
+                }],
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option, true);
+        })
+    })
+    </script>
+</body>
+
+</html>

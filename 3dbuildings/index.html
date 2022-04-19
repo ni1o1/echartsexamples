@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+    window.HOST_TYPE = 1
+    </script>
+    <script src="js/echarts.js"></script>
+    <script type="text/javascript" src="js/maptalks.min.js"></script>
+    <script type="text/javascript" src="js/mapbox-gl.js"></script>
+    <script type="text/javascript" src="js/mapboxgl-token.js"></script>
+    <script type="text/javascript" src="js/echarts-gl.min.js"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="height:100%;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    mapboxgl.accessToken = mapboxglToken
+    $.getJSON('data/buildings.json', function(buildings) {
+        $.getJSON('data/3dbusdata_wgs84.json', function(busdata) {
+            var data = []
+            for (var i = 0; i < buildings['features'].length; i++) {
+                try {
+                    data.push({
+                        coords: buildings['features'][i]['geometry']['coordinates'],
+                        height: buildings['features'][i]['properties']['Floor'] * 8
+                    })
+                } catch {}
+            }
+            var option = {
+                maptalks3D: {
+                    center: [118.118600, 24.520422],
+                    zoom: 13,
+                    pitch: 60,
+                    bearing: 30,
+                    urlTemplate: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                    // altitudeScale: 1,
+                    postEffect: {
+                        enable: true,
+                        FXAA: {
+                            enable: true
+                        }
+                    },
+                    light: {
+                        main: {
+                            intensity: 1,
+                            shadow: true,
+                            shadowQuality: 'high',
+                            alpha: 30,
+                            beta: 60
+                        },
+                        ambient: {
+                            intensity: 0.
+                        },
+                        ambientCubemap: {
+                            texture: 'data/texture.hdr',
+                            exposure: 1,
+                            diffuseIntensity: 0.5,
+                            specularIntensity: 2,
+                        },
+                    }
+                },
+                title: {
+                    text: "",
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 30
+                    }
+                },
+                tooltip: {},
+                series: [{
+                    type: 'lines3D',
+                    coordinateSystem: 'maptalks3D',
+                    data: busdata,
+                    polyline: true,
+                    blendMode: 'lighter',
+                    effect: {
+                        show: true,
+                        constantSpeed: 5,
+                        trailWidth: 2,
+                        trailLength: 0.8,
+                        trailOpacity: 1,
+                        spotIntensity: 10
+                    },
+                    lineStyle: {
+                        width: 0.5,
+                        color: 'rgb(200, 40, 0)',
+                        opacity: 0.
+                    }
+                }, {
+                    type: 'polygons3D',
+                    coordinateSystem: 'maptalks3D',
+                    data: data,
+                    shading: 'realistic',
+                    realisticMaterial: {
+                        metalness: 0.9,
+                        roughness: 0.2,
+                    },
+                    itemStyle: {
+                        color: '#fff'
+                    }
+                }],
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option, true);
+        })
+    })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        window.HOST_TYPE = 1
+    </script>
+    <script src="js/echarts.js"></script>
+    <script src="js/bmap.js"></script>
+    <script src="https://api.map.baidu.com/getscript?v=3.0&ak=KOmVjPVUAey1G2E8zNhPiuQ6QiEmAwZu&services=&t=20200327103013"></script>
+    <script type="text/javascript">
+        $.getJSON('data3.json', function(linedata) {
+            var data = linedata[0]
+            var links = linedata[1]
+            var categories = linedata[2]
+            var cont = linedata[3]
+            var mid = linedata[4]
+            var user1 = linedata[5]
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+
+                title: {
+                    text: "微博转发关系图",
+                    subtext: '@' + user1 + ':' + cont,
+                    sublink: 'http://m.weibo.cn/status/' + mid,
+                    top: "top",
+                    left: "center"
+                },
+
+                tooltip: {},
+                legend: [{
+                    bottom: 0,
+                    // selectedMode: 'single',
+                    data: categories.map(function(a) {
+                        return a.name;
+                    })
+                }],
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataView: {
+                            show: true,
+                            readOnly: true
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    }
+                },
+                animationDuration: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                series: [{
+                    name: '微博',
+                    type: 'graph',
+                    layout: 'force',
+
+                    force: {
+                        //initLayout:'circular'
+                        edgeLength: 50,
+                        repulsion: 50,
+                        gravity: 0.2
+                    },
+                    data: data,
+                    edges: links,
+                    categories: categories,
+                    focusNodeAdjacency: true,
+                    roam: true,
+                    label: {
+                        normal: {
+                            position: 'right',
+                            formatter: '{b}'
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            //color: 'target',
+                            curveness: 0
+                        }
+                    }
+                }]
+            };
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        });
+    </script>
+</body>
+
+</html>

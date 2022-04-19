@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        window.HOST_TYPE = 1
+    </script>
+    <script src="js/echarts.js"></script>
+    <script src="js/bmap.js"></script>
+    <script type="text/javascript">
+        $.getJSON('data.json', function(linedata) {
+            var data = linedata[0]
+            var links = linedata[1]
+            var visualMap = {
+                type: "piecewise",
+                min: 0,
+                max: linedata[2],
+                calculable: true,
+                realtime: false,
+                splitNumber: 5,
+                inRange: {
+                    color: ['#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                }
+            }
+
+
+
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                title: [{
+                        text: "乌鲁木齐" + linedata[3] + "公交OD可视化",
+                        subtext: "有效问卷" + linedata[5] + '份；总问卷数量' + linedata[4] + '份'
+                    }, {
+                        text: "↑",
+                        left: 'left',
+                        top: 'middle',
+                        textStyle: {
+                            fontSize: 100
+                        }
+                    }, {
+                        text: "↓",
+                        left: 'right',
+                        top: 'middle',
+                        textStyle: {
+                            fontSize: 100
+                        }
+                    }
+
+
+                ],
+                visualMap: visualMap,
+                tooltip: {},
+                animationDurationUpdate: 1500,
+                animationEasingUpdate: "quinticInOut",
+                toolbox: {
+                    // y: 'bottom',
+                    feature: {
+                        magicType: {
+                            type: ['stack', 'tiled']
+                        },
+                        dataView: {},
+                        saveAsImage: {
+                            pixelRatio: 2
+                        }
+                    }
+                },
+                series: [{
+                    type: "graph",
+                    layout: "none",
+                    symbol: "circle",
+                    symbolSize: [100, 25],
+                    roam: true,
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: "#fff",
+                                fontSize: 15,
+                            },
+                            show: true
+                        },
+
+                    },
+                    edgeSymbol: ["circle", "arrow"],
+                    edgeSymbolSize: [5, 12],
+                    edgeLabel: {
+                        normal: {
+                            textStyle: {
+                                color: "#000",
+                                fontSize: 100,
+                                show: true
+                            }
+                        }
+                    },
+                    data: data,
+                    links: links,
+                    lineStyle: {
+                        normal: {
+                            opacity: 0.9,
+                            width: 2,
+                            curveness: 0
+                        }
+                    }
+                }]
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        });
+    </script>
+</body>
+
+</html>

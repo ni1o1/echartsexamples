@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="js/echarts.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width: 1200px;height:800px;"></div>
+    <script type="text/javascript">
+    // 初始化图表时设置style
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    $.getJSON('data.json', function(data) {
+        var option = {
+            title: [{
+                text: '长三角各市职住OD',
+            }],
+            tooltip: {},
+            legend: {
+                data: ['上海市', '江苏省', '浙江省', '安徽省','去向','来源']
+            },
+            series: [{
+                name: '销量1',
+                type: 'graph',
+                layout: 'circular',
+                circular: {
+                    rotateLabel: true
+                },
+                //draggable: true,
+                emphasis: { focus: 'adjacency' },
+                label: { position: 'right', show: true },
+                //roam: true,
+                categories: [
+                    { name: '上海市' },
+                    { name: '江苏省' },
+                    { name: '浙江省' },
+                    { name: '安徽省' }
+                ],
+                data: data[1],
+                //edgeSymbol: ['none', 'arrow'],
+                lineStyle: { color: 'source', curveness: 0.3 },
+                edges: data[0]
+            }],
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        myChart.on('click', function(params) {
+            var city = params['name']
+            var links = data[0]
+
+            
+            var option1 = {
+                title: [{}, { text: city + '职住来源去向情况', right: '5%' }],
+                dataset: [
+                    { source: links },
+                    {
+                        transform: {
+                            type: 'filter',
+                            config: { dimension: 'source', '=': city },
+                            print: true
+                        }
+                    },
+                    {
+                        transform: {
+                            type: 'filter',
+                            config: { dimension: 'target', '=': city },
+                            print: true
+                        }
+                    }
+                ],
+                grid: [{ right: '7%', top: '7%', width: '38%', height: '80%' }],
+                xAxis: {},
+                yAxis: { type: 'category', inverse: true ,max:10},
+                series: [{
+                        left: '5%',
+                        width: '40%',
+                    },
+                    {
+                        realtimeSort: true,
+                        type: 'bar',
+                        name: '去向',
+                        datasetIndex: 1,
+                        encode: { x: 'value', y: 'target' },
+                        label: { position: 'right', show: true },
+                        barGap: '0%',
+                        barCategoryGap: '5%',
+                    },
+                    {
+                        type: 'bar',
+                        name: '来源',
+                        datasetIndex: 2,
+                        label: { position: 'right', show: true },
+                        encode: { x: 'value', y: 'source' }
+                    }
+                ]
+            }
+
+            myChart.setOption(option1);
+        });
+    })
+    </script>
+</body>
+
+</html>

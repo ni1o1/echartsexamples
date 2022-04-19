@@ -1,24 +1,26 @@
 # ECharts样例
 
-二维散点图：https://ni1o1.github.io/echartsexamples/xiamenhouseprice/
+厦门二手房价可视化：https://ni1o1.github.io/echartsexamples/xiamenhouseprice/
 
-二维人口热力图：https://ni1o1.github.io/echartsexamples/heatmap/
+厦门人口热力图：https://ni1o1.github.io/echartsexamples/heatmap/
 
-二维公交线网：https://ni1o1.github.io/echartsexamples/busline/
+厦门公交线路二维地图：https://ni1o1.github.io/echartsexamples/busline/
 
-二维OD：https://ni1o1.github.io/echartsexamples/2dod/
+长三角OD不带百度地图：https://ni1o1.github.io/echartsexamples/2dod/
 
-二维地理OD：https://ni1o1.github.io/echartsexamples/oddata/
+交互OD图：https://ni1o1.github.io/echartsexamples/interactiveOD/
 
-三维公交：https://ni1o1.github.io/echartsexamples/3dbus/
+长三角OD带百度地图：https://ni1o1.github.io/echartsexamples/oddata/
 
-三维建筑：https://ni1o1.github.io/echartsexamples/3dbuildings/
+厦门公交线路3D：https://ni1o1.github.io/echartsexamples/3dbus/
+
+厦门三维城市：https://ni1o1.github.io/echartsexamples/3dbuildings/
 
 71路公交GPS可视化：https://ni1o1.github.io/echartsexamples/bus71gps/
 
 公交OD彩虹图：https://ni1o1.github.io/echartsexamples/busOD/
 
-居民活动3D柱状图：https://ni1o1.github.io/echartsexamples/activity3D/
+上海居民活动分布3D柱状图：https://ni1o1.github.io/echartsexamples/activity3D/
 
 上海到南京出行轨迹：https://ni1o1.github.io/echartsexamples/intercitytrip/
 

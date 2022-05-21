@@ -31,3 +31,5 @@
 厦门市轨道3号线站点综合评价系统：https://ni1o1.github.io/xiamenmetro/
 
 城市居民活动空间可视化分析系统：https://ni1o1.github.io/activityspace_shanghai/
+
+百度地图叠加geojson（自定义）：https://ni1o1.github.io/mapgeojson/
